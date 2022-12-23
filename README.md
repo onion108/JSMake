@@ -129,6 +129,7 @@ If you want to know more about this library and methods it provides, we've alrea
 Here are some future plans for this project:
 1. Support more options for `buildTask`. Such as, build the task only if some file exists, or build other tasks before building the task etc. Though you can also implement those features by yourself currently, it will be better to let the library do those things by offering an option. The extra option argument will be optional so it won't affect the existing build scripts.
 2. Build a complete support for Rust, Java and other programming languages and tools, so you can easily process them without using the `shell` or `shellRaw` command which make your build script looks like a shell script. You should write most-used commands by calling javascript functions or methods instead of writing shell commands by your own.
+3. Making a CLI for creating build scripts with templates and run build scripts in the working directory automatically and some other similar stuffs.
 
 ## Example
 Here is an example the is from the build script of the JSMake. JSMake is just constructed using JSMake. So in the task `debug` we just need to test some JSMake commands. Here is the code:
@@ -209,3 +210,4 @@ jsmake.build()
 > v1.1.7: Add simple support for object files linking.
 > v1.1.8: Add simple support for `rust` and `java` languages.
 > v1.1.9: Changed how `shell` work. Added `commit` to the git support.
+> v1.1.10: Changed license to `MIT`.
