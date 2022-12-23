@@ -1,6 +1,13 @@
 # JSMake
 
-**JSMake** is a NodeJS library which aims on helping you make build scripts using JavaScript (or TypeScript, if you like, but JavaScript seems to be more convenient because you don't need to compile), an awesome scripting language. We use `node` as the officially-supported interpreter. You can also port this library to other platforms like `deno` if you like.  
+![License NPM](https://img.shields.io/npm/l/@27onion/jsmake)
+![License GitHub](https://img.shields.io/github/license/onion108/JSMake)
+![version](https://img.shields.io/npm/v/@27onion/jsmake)
+![Last Commit](https://img.shields.io/github/last-commit/onion108/jsmake)
+![Download](https://img.shields.io/npm/dw/@27onion/jsmake)
+![Discord](https://img.shields.io/discord/1055799829801996369)
+
+**JSMake** *(Official Discord Server Id: 1055799829801996369)* is a NodeJS library which aims on helping you make build scripts using JavaScript (or TypeScript, if you like, but JavaScript seems to be more convenient because you don't need to compile), an awesome scripting language. We use `node` as the officially-supported interpreter. You can also port this library to other platforms like `deno` if you like.  
 
 ## Why not `makefile`?
 Yes. `makefile` is an awesome tool to make build scripts. If you really likes it, you don't need to learn how to use it painfully. We're not meaning to take `makefile`'s place, but offer another choice for those Javascript-lovers who don't know `makefile` or shell scripts well to quickly build their build scripts. So if you're already fluent in using `makefile` and don't want to learn a new stuff similar, you can still use `makefile` as your build script language. Of course, if you want to learn and use this new library to write your build scripts even if you're fluent in `makefile` or other similar stuffs, welcome to the world of JSMake!
@@ -209,5 +216,6 @@ jsmake.build()
 > v1.1.5: Add a (rude) chapter in the `README.md`.
 > v1.1.7: Add simple support for object files linking.
 > v1.1.8: Add simple support for `rust` and `java` languages.
-> v1.1.9: Changed how `shell` work. Added `commit` to the git support.
-> v1.1.10: Changed license to `MIT`.
+> v1.1.9: Changed how `shell` work. Added `commit` to the git support.  
+> v1.1.10: Changed license to `MIT`.  
+> v1.1.12: Some chore stuffs.

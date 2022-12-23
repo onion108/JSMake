@@ -53,6 +53,7 @@ jsmake.task('push-git-for-release', async () => {
     }
     await jsmake.git.add('.')
     await jsmake.git.commit('[chore] ready for release')
+    await jsmake.git.push()
 });
 
 jsmake.task('enable-git', async () => {
