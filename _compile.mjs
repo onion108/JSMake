@@ -10,6 +10,7 @@ jsmake.includeSource('jsmake.d.ts')
 jsmake.includeSource('index.js')
 jsmake.includeSource('tsconfig.json')
 jsmake.includeSource('.hintrc')
+jsmake.includeSource('LICENSE')
 
 jsmake.task('publish', async () => {
     await jsmake.buildTask('cleandbg')
