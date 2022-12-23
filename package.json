@@ -1,0 +1,21 @@
+{
+  "name": "@27onion/jsmake",
+  "version": "1.1.9",
+  "description": "A make system based on js",
+  "scripts": {
+    "test": "node ./index.js",
+    "gen_decl": "tsc"
+  },
+  "author": "27Onion",
+  "license": "ISC",
+  "type": "commonjs",
+  "files": [
+    "jsmake.js",
+    "jsmake.d.ts",
+    "index.js"
+  ],
+  "devDependencies": {
+    "typescript": "^4.9.4"
+  },
+  "main": "index.js"
+}

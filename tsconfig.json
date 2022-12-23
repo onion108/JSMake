@@ -1,0 +1,12 @@
+{
+  "include": ["./jsmake.js", "./tsconfig.json"],
+  "exclude": ["./index.js", "./_compile.mjs", "*.d.ts", ".hintrc"],
+  "compilerOptions": {
+    "allowJs": true,
+    "declaration": true,
+    "noEmit": false,
+    "emitDeclarationOnly": true,
+    "outDir": ".",
+    "declarationMap": false,
+  },
+}
