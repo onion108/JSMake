@@ -1,9 +1,13 @@
 # JSMake
-A nodejs library to help you construct the project using node.js(or typescript).
+
+**JSMake** is a NodeJS library which aims on helping you make build scripts using JavaScript (or TypeScript, if you like, but JavaScript seems to be more convenient because you don't need to compile), an awesome scripting language. We use `node` as the officially-supported interpreter. You can also port this library to other platforms like `deno` if you like.  
+
+## Why not `makefile`?
+Yes. `makefile` is an awesome tool to make build scripts. If you really likes it, you don't need to learn how to use it painfully. We're not meaning to take `makefile`'s place, but offer another choice for those Javascript-lovers who don't know `makefile` or shell scripts well to quickly build their build scripts. So if you're already fluent in using `makefile` and don't want to learn a new stuff similar, you can still use `makefile` as your build script language. Of course, if you want to learn and use this new library to write your build scripts even if you're fluent in `makefile` or other similar stuffs, welcome to the world of JSMake!
 
 ## Installation
-Can't you use `npm install`? I don't want to each you again...  
-Hey! Don't hit me. OKOK, I'll write a little about how to install this.  
+Can't you use `npm install`? I don't want to teach you again...  
+Hey! Don't hit on me :wink:. Well, I'll write a little about how to install this.  
 First you need to create an node package in the directory where you want to build the project. Just `cd` to the directory and type:
 ```
 npm init
@@ -19,7 +23,7 @@ Create a new javascript source file and write the following in to the file:
 ```javascript
 const jsmake = require("@27onion/jsmake/jsmake");
 ```
-after doing this, you can start to write the building codes. Thought JSMake also supports unmanaged build scripts, I still suggest you to use *Tasks* to make the build script more useful. Add a task just like this:
+after doing this, you can start to write the building codes. Thought JSMake also supports unmanaged build scripts, I still suggest you to use *Tasks* to make the build script more structured. Add a task just like this:
 ```javascript
 jsmake.task('your_task_name_here', async () => {
     // Any valid javascript code goes here
@@ -47,7 +51,7 @@ This line of code calls the shell method of JSMake which allows you to execute a
 In JSMake, there are lots of environment variables stored in thd `jsmake.variables`. You can access them directly.
 
 ## C/C++ Build Supports
-JSMake provides a bunch of methods to support C/C++ building. The compiler was specified by the environment variable `CC` and `CXX`, which defaults to `'gcc'` and `'g++'` respectively. The compiler options was stored in the environment variable `CC_FLAGS` and `CXX_FLAGS`, which defaults to an empty string.  
+JSMake provides a bunch of methods to support many common operations, so actually you don't need to call `shell` so often (and usually most of those methods calls `shell` for you). One of the common operations we support is compiling C/C++ source files. The compiler was specified by the environment variable `CC` and `CXX`, which defaults to `'gcc'` and `'g++'` respectively. The compiler options was stored in the environment variable `CC_FLAGS` and `CXX_FLAGS`, which defaults to an empty string.  
 We can use the following code to compile C sources:
 ```javascript
 await jsmake.buildC("source1.c", "source2.c", "source3.c")
@@ -55,7 +59,7 @@ await jsmake.buildC("source1.c", "source2.c", "source3.c")
 You can put all the source files and configure the `CC_FLAGS` if you need. There's also a similar method called `buildCxx` which does the same thing as `buildC` but use another set of environment variables starts with `CXX_`.
 
 ## Files
-We now support a few file operations.
+We support a few file operations.
 ```javascript
 jsmake.rm("path/to/file")
 ```
@@ -69,14 +73,14 @@ jsmake.newer("path/to/file1","path/to/file2")
 ```
 Returns `true` if `file1` is newer than `file2`.
 > ### **Technologic Details**:   
-> Compare by `mtime`.
+> Method `jsmake.newer()` compares files by `mtime`.
 ```javascript
 jsmake.exists("path/to/file")
 ```
 Check if the file exists.
 
 ## File Selection & Including
-In JSMake, **Include a File** means include the file into an environment variable `SOURCE_INCLUDED` and will never excluded due to compiling the file. On the other hand, **Select a File** means that the file won't be included into any environment variable; Oppositely, the selected file will be stored in a private array, and will soon be deleted from the array because of the compiling.  
+In JSMake, **Include a File** means include the file into an environment variable `SOURCE_INCLUDED` and will never excluded until you exclude them explicitly. On the other hand, **Select a File** means that the file won't be included into any environment variable; Oppositely, the selected file will be stored in a private array, and will be deleted once you call commands like `compileAllSeletedXX()` or `buildAllSelectedXX()` or something similar.
 We use `jsmake.selectSource(path_to_src)` to select an source and `jsmake.includeSource(path_to_src)` to include a source. And you can you use `await jsmake.compileAllSelectedAsC()` to compile all the selected source as C. Also the method `compileAllSelectedAsCxx` in the module `jsmake` do the same thing as `compileAllSelectedAsC` (and also needs `await` if you want to keep the order), but use the environment variables that starts with `CXX`. JSMake provides `includeAllSelected` and `selecteAllIncluded` to transform between the included files and selected files.  
 
 ## NPM Support
@@ -118,27 +122,44 @@ async jsmake.git.invoke(...options) {...}
 async jsmake.git.commit(cmt) { ... }
 ```
 
+## Further Documentations
+If you want to know more about this library and methods it provides, we've already written `jsdoc` documentation comments for every method/function, and we've also prepared a `jsmake.d.ts` for you. You can look them to get what you want.
+
+## Future Plans (May not be implemented but planning)
+Here are some future plans for this project:
+1. Support more options for `buildTask`. Such as, build the task only if some file exists, or build other tasks before building the task etc. Though you can also implement those features by yourself currently, it will be better to let the library do those things by offering an option. The extra option argument will be optional so it won't affect the existing build scripts.
+2. Build a complete support for Rust, Java and other programming languages and tools, so you can easily process them without using the `shell` or `shellRaw` command which make your build script looks like a shell script. You should write most-used commands by calling javascript functions or methods instead of writing shell commands by your own.
+
 ## Example
 Here is an example the is from the build script of the JSMake. JSMake is just constructed using JSMake. So in the task `debug` we just need to test some JSMake commands. Here is the code:
 ```javascript
-// JSMake, _compile.js
-const jsmake = require("./jsmake");
+// JSMake, _compile.mjs
+#!/usr/bin/env node
 
-jsmake.includeSource('_compile.js')
+import jsmake from "./jsmake.js";
+
+jsmake.includeSource('_compile.mjs')
 jsmake.includeSource('jsmake.js')
 jsmake.includeSource('package.json')
 jsmake.includeSource('README.md')
+jsmake.includeSource('jsmake.d.ts')
+jsmake.includeSource('index.js')
+jsmake.includeSource('tsconfig.json')
+jsmake.includeSource('.hintrc')
 
 jsmake.task('publish', async () => {
-    jsmake.variables.IGNORE_ERRORS = true
-    await jsmake.nodePack.patch()
     await jsmake.buildTask('cleandbg')
-    await jsmake.npm('publish')
+    if (jsmake.newer('jsmake.js', 'jsmake.d.ts')) {
+        await jsmake.buildTask('gendecl')
+    }
+    await jsmake.buildTask('push-git-for-release')
+    await jsmake.nodePack.patch()
+    await jsmake.nodePack.publish()
 })
 
 jsmake.task('cleandbg', async () => {
     jsmake.dir('.', (path) => {
-        if (!jsmake.isIncluded(path)) {
+        if (!jsmake.isIncluded(path) && !path.startsWith('.')) {
             jsmake.rm(path)
             console.log(`Cleared: ${path}`)
         }
@@ -151,6 +172,27 @@ jsmake.task('debug', async () => {
     })
     console.log(jsmake.exists("jsmake.js"))
     console.log(jsmake.newer('jsmake.js', 'package.json'))
+    console.log(jsmake.git.isGitted())
+    await jsmake.shell("echo hello,world");
+    await jsmake.shellRaw(["echo", "hello, world !!!"])
+    await jsmake.shell("lsd -l")
+    await jsmake.shell("echo \"Hello,    World!\"")
+})
+
+jsmake.task('gendecl', async () => {
+    await jsmake.npm('run', 'gen_decl')
+})
+
+jsmake.task('push-git-for-release', async () => {
+    if (!jsmake.git.isGitted()) {
+        await jsmake.buildTask('enable-git')
+    }
+    await jsmake.git.add('.')
+    await jsmake.git.commit('ready for release')
+});
+
+jsmake.task('enable-git', async () => {
+    await jsmake.git.init()
 })
 
 jsmake.build()
